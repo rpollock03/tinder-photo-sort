@@ -14,3 +14,5 @@ export const COLORS = {
     like: '#00eda6',
     nope: '#ff006f'
 }
+
+export const ACTION_OFFSET = 100

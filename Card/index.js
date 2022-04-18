@@ -1,13 +1,18 @@
-import {View, Text, Image} from 'react-native'
+import {View, Text, Image, Animated} from 'react-native'
 import React, {useCallback} from 'react'
 import {LinearGradient} from 'expo-linear-gradient'
 import {styles} from './styles'
 
 import Choice from "../Choice"
 
-const Card = ({name, source, isFirst}) =>{
+import {ACTION_OFFSET} from '../utils/constants'
+
+const Card = ({name, source, isFirst, swipe, ...rest}) =>{
+
 
 const renderChoice = useCallback(()=>{
+
+
     return (
         <>
         <View style={[styles.choiceContainer, styles.likeContainer]}>
@@ -20,8 +25,20 @@ const renderChoice = useCallback(()=>{
     )
 }, [])
 
+
+const rotate = swipe.x.interpolate({
+    inputRange: [-ACTION_OFFSET, 0, ACTION_OFFSET],
+    outputRange: ['8deg', '0deg', '-8deg']
+})
+
+const cardPositionStyle = {
+   // transform:[ {translateX: swipe.x}, {translateY: swipe.y}]
+   transform: [{translateX: swipe.x}, {translateY: swipe.y}, {rotate}]
+}
+
+
 return (
-    <View style ={styles.container}>
+    <Animated.View style ={[styles.container, isFirst && cardPositionStyle]} {...rest}>
         <Image source = {source} style = {styles.image}/>
         <LinearGradient colors={['transparent', 'rgba(0,0,0,0.9)']} style={styles.gradient} />
         <Text style={styles.name}>{name}</Text>
@@ -30,7 +47,7 @@ return (
             isFirst && renderChoice()
         }
 
-    </View>
+    </Animated.View>
 )
 }
 
