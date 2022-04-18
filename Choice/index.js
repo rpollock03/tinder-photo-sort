@@ -1,10 +1,16 @@
 import {Text, View} from 'react-native'
 
+import {COLORS} from '../utils/constants'
+
+import {styles} from './styles'
+
 const Choice = ({type}) => {
 
+const color = COLORS[type]
+
     return (
-        <View>
-            <Text>{type}</Text>
+        <View style={[styles.container, {borderColor: color}]}>
+            <Text style={[styles.text, {color}]}>{type}</Text>
         </View>
     )
 }

@@ -34,8 +34,10 @@ export const styles = StyleSheet.create({
     },
     likeContainer:{
         left: 45,
+        transform: [{rotate: '-30deg'}]
     },
     nopeContainer:{
-        right:45
+        right:45, 
+        transform: [{rotate: '30deg'}]
     }
 })

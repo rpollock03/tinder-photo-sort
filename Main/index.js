@@ -4,6 +4,7 @@ import {pets as petsArray} from './data'
 
 import {styles} from './styles'
 
+import Footer from '../Footer'
 import Card from "../Card"
 
 const Main = () => {
@@ -23,6 +24,8 @@ const Main = () => {
                         isFirst={isFirst}
                     />   
             }).reverse()}
+
+            <Footer/>
         </View>
     )
 }
