@@ -14,12 +14,8 @@ import {styles} from './styles'
 
 const Main = ({navigation, route}) => {
 
-   
-
     const [photos, setPhotos] = useState(route.params.updatedPhotos)
     console.log(photos)
-
-    //const [pets, setPets] = useState(route.params.photosArray)
 
     const swipe = useRef(new Animated.ValueXY({x:0, y:0})).current
     const tiltSign = useRef(new Animated.Value(1)).current
@@ -67,7 +63,7 @@ const Main = ({navigation, route}) => {
     })
 
     const removeTopCard = useCallback(()=> {
-        setPhotos((prevState) => prevState.slice(1)) //CHANGE MADE HERE
+        setPhotos((prevState) => prevState.slice(1)) 
         swipe.setValue({x:0, y:0})
     },[swipe])
 
@@ -81,12 +77,11 @@ const Main = ({navigation, route}) => {
 
     return (
         <View style={styles.container}>
-            {photos.map(({id, localUri, creationTime}, index)=>{ //change made here //name, source
+            {photos.map(({id, localUri, creationTime}, index)=>{ 
                 
                 const isFirst = index==0
                 const dragHandlers = isFirst ? panResponder.panHandlers : {}
                 
-                //CHANGES MADE BELOW
                 return <Card 
                         key = {id}
                         name = {creationTime}
