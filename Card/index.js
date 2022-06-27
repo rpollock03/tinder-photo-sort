@@ -10,8 +10,6 @@ import {ACTION_OFFSET} from '../utils/constants'
 const Card = ({name, source, isFirst, swipe, tiltSign, ...rest}) =>{
 
 
-
-
 const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
     inputRange: [-ACTION_OFFSET, 0, ACTION_OFFSET],
     outputRange: ['8deg', '0deg', '-8deg']
@@ -49,10 +47,9 @@ const renderChoice = useCallback(()=>{
     )
 }, [likeOpacity, nopeOpacity])
 
-
 return (
     <Animated.View style ={[styles.container, isFirst && cardPositionStyle]} {...rest}>
-        <Image source = {source} style = {styles.image}/>
+        <Image source = {{uri: source}} style = {styles.image}/>
         <LinearGradient colors={['transparent', 'rgba(0,0,0,0.9)']} style={styles.gradient} />
         <Text style={styles.name}>{name}</Text>
 

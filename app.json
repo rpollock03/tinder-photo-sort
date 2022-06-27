@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tinder-clone",
-    "slug": "tinder-clone",
+    "name": "tinder-photo-sort",
+    "slug": "tinder-photo-sort",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
