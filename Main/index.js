@@ -1,21 +1,26 @@
 import React, {useState, useRef, useCallback, useEffect} from "react"
-import {View, Animated, PanResponder} from "react-native"
-
-import {pets as petsArray} from './data'
+import {View, Animated, PanResponder, ActivityIndicator} from "react-native"
 
 import Footer from '../Footer'
 import Card from "../Card"
+
+import * as ImageManipulator from 'expo-image-manipulator';
+
+import SplashScreen from '../SplashScreen'
 
 import { CARD, ACTION_OFFSET } from "../utils/constants"
 
 import {styles} from './styles'
 
-
+import * as MediaLibrary from 'expo-media-library'
 
 const Main = ({navigation, route}) => {
 
-    const [photos, setPhotos] = useState(route.params.updatedPhotos)
-    console.log(photos)
+    const [status, requestPermission] = MediaLibrary.usePermissions()
+
+    const [photos, setPhotos] = useState([])
+
+    const[isLoading, setIsLoading]=useState(true)
 
     const swipe = useRef(new Animated.ValueXY({x:0, y:0})).current
     const tiltSign = useRef(new Animated.Value(1)).current
@@ -27,6 +32,11 @@ const Main = ({navigation, route}) => {
         }
     },[pets.length])
 */
+    useEffect(async()=>{
+        const getPhotos = await getAllPhotos(route.params.id)
+        setPhotos(getPhotos)
+        setIsLoading(false)
+    },[])
     
     const panResponder = PanResponder.create({
         onMoveShouldSetPanResponder: () => true,
@@ -75,7 +85,33 @@ const Main = ({navigation, route}) => {
         }).start(removeTopCard)
     }, [removeTopCard, swipe.x])
 
-    return (
+    const getAllPhotos = async (id) => {
+        
+        let album = await MediaLibrary.getAssetsAsync({album: id, mediaType: 'photo', first: 10, sortBy: ['creationTime']})
+     
+        const foundPhotos = album['assets']
+        const updatedPhotos = []
+        for (let i=0;i<foundPhotos.length;i++){
+            const updatedPhoto = await MediaLibrary.getAssetInfoAsync(foundPhotos[i].id)
+            const compressedImage = await ImageManipulator.manipulateAsync(updatedPhoto.localUri, [], { compress: 0.2 });
+            updatedPhotos.push({
+                creationTime: updatedPhoto['creationTime'],
+                isFavorite: updatedPhoto['isFavorite'],
+                localUri: compressedImage.uri,
+                id: updatedPhoto['id']
+            })
+        }
+        return updatedPhotos       
+        //const photosArray = [...photos] NON STATE VERSION
+    }
+
+
+    if(isLoading){
+        return <SplashScreen/>
+    }
+
+else   return (
+
         <View style={styles.container}>
             {photos.map(({id, localUri, creationTime}, index)=>{ 
                 
@@ -91,7 +127,7 @@ const Main = ({navigation, route}) => {
                         tiltSign={tiltSign}
                         {...dragHandlers}
                     />   
-            }).reverse()}
+            }).reverse() }
 
             <Footer handleChoice={handleChoice}/>
         </View>

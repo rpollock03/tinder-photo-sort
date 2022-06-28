@@ -29,7 +29,6 @@ const nopeOpacity =swipe.x.interpolate({
 
 
 const cardPositionStyle = {
-   // transform:[ {translateX: swipe.x}, {translateY: swipe.y}]
    transform: [{translateX: swipe.x}, {translateY: swipe.y}, {rotate}]
 }
 
@@ -49,7 +48,7 @@ const renderChoice = useCallback(()=>{
 
 return (
     <Animated.View style ={[styles.container, isFirst && cardPositionStyle]} {...rest}>
-        <Image source = {{uri: source}} style = {styles.image}/>
+        <Image source = {{uri: source}} style = {[styles.image]}/>
         <LinearGradient colors={['transparent', 'rgba(0,0,0,0.9)']} style={styles.gradient} />
         <Text style={styles.name}>{name}</Text>
 
