@@ -113,15 +113,16 @@ const Main = ({navigation, route}) => {
 else   return (
 
         <View style={styles.container}>
-            {photos.map(({id, localUri, creationTime}, index)=>{ 
+            {photos.map(({id, localUri, creationTime, isFavorite}, index)=>{ 
                 
                 const isFirst = index==0
                 const dragHandlers = isFirst ? panResponder.panHandlers : {}
                 
                 return <Card 
                         key = {id}
-                        name = {creationTime}
+                        date = {creationTime}
                         source={localUri}
+                        isFavorite={isFavorite}
                         isFirst={isFirst}
                         swipe={swipe}
                         tiltSign={tiltSign}

@@ -20,7 +20,9 @@ const RoundButton = ({name, size, color, onPress}) => {
 
     return (
         <TouchableWithoutFeedback 
-            onPressIn={() => animateScale(0.8)} 
+            onPressIn={() => {animateScale(0.8)
+                console.log('pressed like!')//we add delete /favourite function here.
+                }} 
             delayPressIn={0}
             onPressOut={()=> {
                 animateScale(1);
