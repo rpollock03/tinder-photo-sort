@@ -44,7 +44,7 @@ const getDate = (unixTimestamp)=> {
         else return 'th'
     }
 
-    let date = new Date(unixTimestamp * 1000)
+    let date = new Date(unixTimestamp)
     let dayOfMonth = date.getDate()
     let dayOfWeek = daysOfWeek[date.getDay()]
     let month = monthsOfYear[date.getMonth()]
@@ -60,10 +60,10 @@ const renderChoice = useCallback(()=>{
     return (
         <>
         <Animated.View style={[styles.choiceContainer, styles.likeContainer, {opacity: likeOpacity}]}>
-            <Choice type="like"/>
+            <Choice type="keep"/>
         </Animated.View>
         <Animated.View style={[styles.choiceContainer, styles.nopeContainer, {opacity: nopeOpacity}]}>
-          <Choice type="nope"/>
+          <Choice type="delete"/>
       </Animated.View>
       </>
     )
@@ -73,7 +73,7 @@ return (
     <Animated.View style ={[styles.container, isFirst && cardPositionStyle]} {...rest}>
         <Image source = {{uri: source}} style = {[styles.image]}/>
         <LinearGradient colors={['transparent', 'rgba(0,0,0,0.9)']} style={styles.gradient} />
-        <Text style={styles.name}>{date}</Text>
+        <Text style={styles.name}>{getDate(date)}</Text>
 
         {
             isFirst && renderChoice()

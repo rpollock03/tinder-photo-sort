@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 15,
         alignItems: 'center',
-        width: 170,
         justifyContent: 'space-between',
         zIndex: -1
     }

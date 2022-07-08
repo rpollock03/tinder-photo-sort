@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 22,
         left: 22,
-        fontSize: 36,
+        fontSize: 26,
         fontWeight: 'bold',
         color: '#fff'
     },

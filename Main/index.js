@@ -127,7 +127,8 @@ else   return (
                         swipe={swipe}
                         tiltSign={tiltSign}
                         {...dragHandlers}
-                    />   
+                    /> 
+                    
             }).reverse() }
 
             <Footer handleChoice={handleChoice}/>

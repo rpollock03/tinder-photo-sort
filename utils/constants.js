@@ -12,8 +12,8 @@ export const CARD = {
 }
 
 export const COLORS = {
-    like: '#00eda6',
-    nope: '#ff006f'
+    keep: '#00eda6',
+    delete: '#ff006f'
 }
 
 export const ACTION_OFFSET = 100
