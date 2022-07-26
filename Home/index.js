@@ -24,7 +24,6 @@ const Home = ({navigation}) => {
    
     useEffect(async()=>{
 
-
         const getAllAlbums = async () => {
 
             // CAN PROBABLY IMPROVE THIS SECTION - DONT NEED THE IF STATEMENT, BETTER WAY OF FILTERING TO ENSURE ONLY ALBUMS WITH PHOTOGRAPHS RATHER THAN 'ASSETS' ARE RETURNED
@@ -56,13 +55,14 @@ const Home = ({navigation}) => {
                         id: albumsWithPhotos[i].id,
                         preview: compressedImage.uri // updatedPhoto.localUri//MIGHT SLOW IT DOWN
                     }])      
-                   
-                    
                 }
             }
         }
-
-        const result = await getAllAlbums()
+        if(albums.length==0){
+            const result = await getAllAlbums()
+        }
+        
+  
  
     }, [])
     
@@ -78,14 +78,22 @@ const Home = ({navigation}) => {
             data={albums}
             key={2}
             numColumns={2}
-            renderItem={({item})=>{
+            renderItem={({item, index})=>{
               
                 return (
-                <Pressable style={{width:'50%', padding:10 }}onPress={()=>navigation.navigate('Main', {id: item.id})}>
-                  <View style={{display: 'flex', backgroundColor:'blue', display:'flex', justifyContent:'center'}}>
+                <Pressable style={{width:'50%', padding:12, position: 'relative' }} onPress={()=>navigation.navigate('Main', {id: item.id})}>
+                  
+                  
+                  <View style={{display: 'flex', backgroundColor:'green', display:'flex', justifyContent:'center', position: 'relative', borderColor: 'white', borderWidth:6}}>
                     <Image source = {{uri: item.preview}} style={{width:'100%', aspectRatio: 1/1}}/>
-                    <Text>{item.title}: {item.assetCount} imgs</Text>
+                    <Text style={{padding: 10}}>{item.title}: {item.assetCount} imgs</Text>
                   </View>
+                  <View style={{width:'100%', height: '100%',zIndex: '-1', margin: 12, backgroundColor: 'blue', position: 'absolute', transform: [{ rotate: '3deg'}]}}>
+
+                  </View>
+                  <View style={{width:'100%', height: '100%',zIndex: '-2', margin: 12, backgroundColor: 'orange', position: 'absolute', transform: [{ rotate: '5deg'}]}}>
+
+</View>
                      
                 </Pressable>
                 )
