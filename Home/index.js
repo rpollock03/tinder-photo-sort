@@ -17,7 +17,13 @@ const Home = ({navigation}) => {
     const[isLoading, setIsLoading]= useState(true)
 
     // retrieve a list of all photo albums with 1 or more photos on app launch
+   useEffect(()=>{
+    const timeout = setTimeout(()=> setIsLoading(false),2000)
+    return () => clearTimeout(timeout)
+   },[])
+   
     useEffect(async()=>{
+
 
         const getAllAlbums = async () => {
 
@@ -27,7 +33,6 @@ const Home = ({navigation}) => {
                 return item.assetCount>0
             })
             
-            const albumsPreview = []
             for(let i=0; i<albumsWithPhotos.length; i++){
                 //get the most recent photo in the album to use as cover
 
@@ -36,35 +41,29 @@ const Home = ({navigation}) => {
              if (typeof(mostRecentPhoto.assets[0]) == 'undefined'){
                 continue;
              }
+ 
 
                     //get the local uri
                 const updatedPhoto = await MediaLibrary.getAssetInfoAsync(mostRecentPhoto.assets[0].id)
+
                 if(updatedPhoto){
-                    const compressedImage = await ImageManipulator.manipulateAsync(updatedPhoto.localUri, [], { compress: 0.2 });
-                    albumsPreview.push({
+                    const compressedImage = await ImageManipulator.manipulateAsync(updatedPhoto.localUri, [], { compress: 0.1 });
+   
+               
+                    setAlbums(prevState => [...prevState, {
                         title: albumsWithPhotos[i].title,
                         assetCount: albumsWithPhotos[i].assetCount,
                         id: albumsWithPhotos[i].id,
-                        preview: compressedImage.uri
-                    })
+                        preview: compressedImage.uri // updatedPhoto.localUri//MIGHT SLOW IT DOWN
+                    }])      
+                   
+                    
                 }
-                    //compress the local uri
-
-                    //push to new arra
-
-               
-
-            
-            //   }
-               
-         
             }
-            console.log(albumsPreview)
-            setAlbums(albumsPreview)
         }
 
         const result = await getAllAlbums()
-        setIsLoading(false)
+ 
     }, [])
     
 
@@ -81,11 +80,10 @@ const Home = ({navigation}) => {
             numColumns={2}
             renderItem={({item})=>{
               
-             
                 return (
-                <Pressable onPress={()=>navigation.navigate('Main', {id: item.id})}>
-                  <View style={{width: 200, height: 200}}>
-                    <Image source = {{uri: item.preview}} style={{width: 100, height: 100}}/>
+                <Pressable style={{width:'50%', padding:10 }}onPress={()=>navigation.navigate('Main', {id: item.id})}>
+                  <View style={{display: 'flex', backgroundColor:'blue', display:'flex', justifyContent:'center'}}>
+                    <Image source = {{uri: item.preview}} style={{width:'100%', aspectRatio: 1/1}}/>
                     <Text>{item.title}: {item.assetCount} imgs</Text>
                   </View>
                      

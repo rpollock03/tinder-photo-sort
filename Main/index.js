@@ -25,13 +25,27 @@ const Main = ({navigation, route}) => {
     const swipe = useRef(new Animated.ValueXY({x:0, y:0})).current
     const tiltSign = useRef(new Animated.Value(1)).current
 
-    //reset if all cards used
-    /*useEffect(()=>{
-        if(!pets.length){
-            setPets(petsArray)
-        }
-    },[pets.length])
-*/
+    //get new cards when original cards swiped through
+    useEffect(async()=>{
+     
+
+     if(photos.length==5){
+        //fetch new photos and add to photos.
+    
+
+        //we pass creation time to the get photos function to 
+        const getPhotos = await updatePhotos(route.params.id, photos[photos.length -1].creationTime)
+        setPhotos(current => [...current, getPhotos])
+     }
+
+     if(photos.length==0){
+        setIsLoading(true)
+     }
+
+    },[photos.length])
+
+
+
     useEffect(async()=>{
         const getPhotos = await getAllPhotos(route.params.id)
         setPhotos(getPhotos)
@@ -85,10 +99,34 @@ const Main = ({navigation, route}) => {
         }).start(removeTopCard)
     }, [removeTopCard, swipe.x])
 
+
+    const updatePhotos = async (id, beforeDate) => {
+        console.log(id, beforeDate)
+        let album = await MediaLibrary.getAssetsAsync({album: id, mediaType: 'photo', first: 10, sortBy: ['creationTime'], createdBefore: beforeDate})
+        const foundPhotos = album['assets']
+        const updatedPhotos = []
+        for (let i=0;i<foundPhotos.length;i++){
+            const updatedPhoto = await MediaLibrary.getAssetInfoAsync(foundPhotos[i].id)
+            const compressedImage = await ImageManipulator.manipulateAsync(updatedPhoto.localUri, [], { compress: 0.2 });
+            updatedPhotos.push({
+                creationTime: updatedPhoto['creationTime'],
+                isFavorite: updatedPhoto['isFavorite'],
+                localUri: compressedImage.uri,
+                id: updatedPhoto['id']
+            })
+        }
+        return updatedPhotos 
+    }
+
+
+
+
+
+
     const getAllPhotos = async (id) => {
         
-        let album = await MediaLibrary.getAssetsAsync({album: id, mediaType: 'photo', first: 10, sortBy: ['creationTime']})
-     
+    let album = await MediaLibrary.getAssetsAsync({album: id, mediaType: 'photo', first: 10, sortBy: ['creationTime']})
+
         const foundPhotos = album['assets']
         const updatedPhotos = []
         for (let i=0;i<foundPhotos.length;i++){
@@ -117,7 +155,7 @@ else   return (
                 
                 const isFirst = index==0
                 const dragHandlers = isFirst ? panResponder.panHandlers : {}
-                
+        
                 return <Card 
                         key = {id}
                         date = {creationTime}
