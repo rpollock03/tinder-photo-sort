@@ -29,9 +29,9 @@ const Main = ({navigation, route}) => {
     useEffect(async()=>{
      
 
-     if(photos.length==5){
+     if(photos.length==8){
         //fetch new photos and add to photos.
-    
+    console.log('getting new photos')
 
         //we pass creation time to the get photos function to 
         const getPhotos = await updatePhotos(route.params.id, photos[photos.length -1].creationTime)

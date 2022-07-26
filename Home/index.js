@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Text, View, Button, SafeAreaView, Image, FlatList, ActivityIndicator, Pressable } from 'react-native';
-
+import { Ionicons } from '@expo/vector-icons'; 
 import { Chip } from 'react-native-paper';
 
 import * as MediaLibrary from 'expo-media-library'
@@ -81,17 +81,18 @@ const Home = ({navigation}) => {
             renderItem={({item, index})=>{
               
                 return (
-                <Pressable style={{width:'50%', padding:12, position: 'relative' }} onPress={()=>navigation.navigate('Main', {id: item.id})}>
+                <Pressable style={{width:'50%', padding:10, position: 'relative' }} onPress={()=>navigation.navigate('Main', {id: item.id})}>
                   
                   
-                  <View style={{display: 'flex', backgroundColor:'green', display:'flex', justifyContent:'center', position: 'relative', borderColor: 'white', borderWidth:6}}>
-                    <Image source = {{uri: item.preview}} style={{width:'100%', aspectRatio: 1/1}}/>
-                    <Text style={{padding: 10}}>{item.title}: {item.assetCount} imgs</Text>
+                  <View style={{display: 'flex', backgroundColor:'white', margin: 4, display:'flex', justifyContent:'center', position: 'relative', borderColor: 'grey', borderWidth: 1, borderRadius: 2,transform: [{ rotate: '-2deg'}] }}>
+                    <Image source = {{uri: item.preview}} style={{width:'100%', borderColor: 'white', borderTopWidth:7,borderLeftWidth:7, borderRightWidth:7, aspectRatio: 1/1}}/>
+                    <Ionicons name="trash" size={30} color="black" style={{position:'absolute', top:135, left:135, color:'red'}}/>
+                    <Text style={{padding: 7}}><Ionicons name="camera-outline" size={20} color="black" /> {item.title} <Text style={{color:'grey', padding:2}}>[{item.assetCount}]</Text></Text>
                   </View>
-                  <View style={{width:'100%', height: '100%',zIndex: '-1', margin: 12, backgroundColor: 'blue', position: 'absolute', transform: [{ rotate: '3deg'}]}}>
+                  <View style={{width:'100%', height: '100%',zIndex: '-1', margin: 12, backgroundColor: 'white', borderColor: 'grey', borderWidth: 1, position: 'absolute', borderRadius: 2, transform: [{ rotate: '3deg'}]}}>
 
                   </View>
-                  <View style={{width:'100%', height: '100%',zIndex: '-2', margin: 12, backgroundColor: 'orange', position: 'absolute', transform: [{ rotate: '5deg'}]}}>
+                  <View style={{width:'100%', height: '100%',zIndex: '-2', margin: 12, backgroundColor: 'white', borderColor: 'grey', borderWidth: 1,position: 'absolute', borderRadius: 2, transform: [{ rotate: '5deg'}]}}>
 
 </View>
                      
